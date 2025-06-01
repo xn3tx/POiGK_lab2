@@ -1,5 +1,5 @@
-#POiGK lab2
-###Wygląd sceny
+# POiGK lab2
+### Wygląd sceny
 ![scena](scena.png)
-###Dodane slidery
+### Dodane slidery
 ![slidery](sliders.png)
