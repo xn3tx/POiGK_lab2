@@ -109,6 +109,14 @@
             }
         },
          {
+            "name": "Emissive",
+            "type": "Float3",
+            "visivility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            }
+         },
+         {
             "name": "RefractionColor",
             "type": "Float3",
             "dflt": "(1.0,1.0,1.0)",
@@ -261,7 +269,7 @@
             "name": "Scenes",
             "items": [
                 {
-                    "label": "Transparent Orange"
+                    "label": "Changed by sliders"
                 },
                 {
                     "label": "Transparent Clear"
@@ -273,7 +281,7 @@
                     "label": "Coffee"
                 },
                 {
-                    "label": "Focus"
+                    "label": "Pearl"
                 },
                 {
                     "label": "Gold"
