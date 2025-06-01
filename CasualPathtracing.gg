@@ -98,6 +98,65 @@
             "UISettings": {
                 "UIHint": "Color"
             }
+        },
+         {
+            "name": "Albedo",
+            "type": "Float3",
+            "dflt": "(1.0,1.0,1.0)",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            }
+        },
+         {
+            "name": "RefractionColor",
+            "type": "Float3",
+            "dflt": "(1.0,1.0,1.0)",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            }
+        },
+         {
+            "name": "RefractionChance",
+            "type": "Float",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider"
+            }
+        },
+        {
+            "name": "RefractionRoughness",
+            "type": "Float",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider"
+            }
+        },
+         {
+            "name": "SpecularColor",
+            "type": "Float3",
+            "dflt": "(1.0,1.0,1.0)",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            }
+        },
+         {
+            "name": "SpecularChance",
+            "type": "Float",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider"
+            }
+        },
+         {
+            "name": "SpecularRoughness",
+            "type": "Float",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider"
+            }
         }
     ],
     "shaders": [
@@ -217,10 +276,10 @@
                     "label": "Focus"
                 },
                 {
-                    "label": "Transparent Pink"
+                    "label": "Gold"
                 },
                 {
-                    "label": "Transparent Blue"
+                    "label": "Chromium"
                 }
             ]
         }
