@@ -32,15 +32,6 @@ static const float c_FOVDegrees = 90.0f;
 // how many renders per frame - make this larger to get around the vsync limitation, and get a better image faster.
 #define c_numRendersPerFrame /*$(Variable:RaysPerPixel)*/
 
-// 0 = transparent orange spheres of increasing surface roughness
-// 1 = transparent spheres of increasing IOR
-// 2 = opaque spheres of increasing IOR
-// 3 = transparent spheres of increasing absorption
-// 4 = transparent spheres of various heights, to show hot spot focus/defocus
-// 5 = transparent spheres becoming increasingly diffuse
-// 6 = transparent spheres of increasing surface roughness
-//#define SCENE 0
-
 float3 LessThan(float3 f, float value)
 {
     return float3(
@@ -365,21 +356,21 @@ void TestSceneTrace(in float3 rayPos, in float3 rayDir, inout SRayHitInfo hitInf
 			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -8.0f, 00.0f, 2.8f)))
 			{
 				float r = float(sphereIndex) / float(c_numSpheres - 1) * 0.5f;
-
-				hitInfo.material = GetZeroedMaterial();
-				hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);
-				hitInfo.material.emissive = float3(0.0f, 0.0f, 0.0f);
-				hitInfo.material.specularChance = 0.02f;
-				hitInfo.material.specularRoughness = r;
-				hitInfo.material.specularColor = float3(1.0f, 1.0f, 1.0f) * 0.8f;
-				hitInfo.material.IOR = 1.1f;
-				hitInfo.material.refractionChance = 1.0f;
-				hitInfo.material.refractionRoughness = r;
-				hitInfo.material.refractionColor = float3(0.0f, 0.5f, 1.0f);
+                hitInfo.material = GetZeroedMaterial();
+                hitInfo.material.albedo = /*$(Variable:Albedo)*/; 
+                hitInfo.material.emissive = /*$(Variable:Emissive)*/; 
+                hitInfo.material.specularChance = /*$(Variable:SpecularChance)*/;
+                hitInfo.material.specularRoughness = /*$(Variable:SpecularRoughness)*/;  
+                hitInfo.material.specularColor = /*$(Variable:SpecularColor)*/;  
+                hitInfo.material.refractionChance = /*$(Variable:RefractionChance)*/;
+                hitInfo.material.refractionRoughness = /*$(Variable:RefractionRoughness)*/;
+                hitInfo.material.refractionColor = /*$(Variable:RefractionColor)*/;  
+                hitInfo.material.IOR = 1.0f;
+				
 			}
 		}
     }
-    else if (/*$(Variable:Scene)*/ == 1)
+    else if (/*$(Variable:Scene)*/ == 1) //glass
     {
 		const int c_numSpheres = 7;
 		for (int sphereIndex = 0; sphereIndex < c_numSpheres; ++sphereIndex)
@@ -387,142 +378,116 @@ void TestSceneTrace(in float3 rayPos, in float3 rayDir, inout SRayHitInfo hitInf
 			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -8.0f, 0.0f, 2.8f)))
 			{
 				float ior = 1.0f + 0.5f * float(sphereIndex) / float(c_numSpheres - 1);
-
-				hitInfo.material = GetZeroedMaterial();
-				hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);
-				hitInfo.material.emissive = float3(0.0f, 0.0f, 0.0f);
-				hitInfo.material.specularChance = 0.02f;
-				hitInfo.material.specularRoughness = 0.0f;
-				hitInfo.material.specularColor = float3(1.0f, 1.0f, 1.0f) * 0.8f;
-				hitInfo.material.IOR = ior;
-				hitInfo.material.refractionChance = 1.0f;
-				hitInfo.material.refractionRoughness = 0.0f;
+                hitInfo.material = GetZeroedMaterial();
+                hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);           
+                hitInfo.material.emissive = float3(0.03f, 0.01f, 0.01f);        
+                hitInfo.material.specularChance = 0.2f;                         
+                hitInfo.material.specularRoughness = 0.05f;                    
+                hitInfo.material.specularColor = float3(1.0f, 0.95f, 0.95f);
+                hitInfo.material.IOR = 1.5f;                                   
+                hitInfo.material.refractionChance = 1.0f;
+                hitInfo.material.refractionRoughness = 0.05f;                  
+                hitInfo.material.refractionColor = float3(0.9f, 0.25f, 0.25f);
 			}
         }
     }
-    else if (/*$(Variable:Scene)*/ == 2)
+    else if (/*$(Variable:Scene)*/ == 2) //red
     {
 		const int c_numSpheres = 7;
 		for (int sphereIndex = 0; sphereIndex < c_numSpheres; ++sphereIndex)
 		{
 			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -8.0f, 0.0f, 2.8f)))
 			{
-				float ior = 1.0f + 1.0f * float(sphereIndex) / float(c_numSpheres - 1);
-
-				hitInfo.material = GetZeroedMaterial();
-				hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);
-				hitInfo.material.emissive = float3(0.0f, 0.0f, 0.0f);
-				hitInfo.material.specularChance = 0.02f;
-				hitInfo.material.specularRoughness = 0.0f;
-				hitInfo.material.specularColor = float3(1.0f, 1.0f, 1.0f) * 0.8f;
-				hitInfo.material.IOR = ior;
-				hitInfo.material.refractionChance = 0.0f;
+				float ior = 1.3f + 0.3f * float(sphereIndex) / float(c_numSpheres - 1);
+                hitInfo.material = GetZeroedMaterial();
+                hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);
+                hitInfo.material.emissive = float3(0.05f, 0.01f, 0.01f); 
+                hitInfo.material.specularChance = 0.25f;
+                hitInfo.material.specularRoughness = 0.1f;
+                hitInfo.material.specularColor = float3(1.0f, 0.95f, 0.95f);
+                hitInfo.material.IOR = ior;
+                hitInfo.material.refractionChance = 0.1f;
+                hitInfo.material.refractionRoughness = 0.1f;
+                hitInfo.material.refractionColor = float3(1.0f, 0.5f, 0.5f);
 			}
         }
     }
-    else if (/*$(Variable:Scene)*/ == 3)
+    else if (/*$(Variable:Scene)*/ == 3) //purple blue
     {
 		const int c_numSpheres = 7;
 		for (int sphereIndex = 0; sphereIndex < c_numSpheres; ++sphereIndex)
 		{
 			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -8.0f, 0.0f, 2.8f)))
 			{
-				float absorb = float(sphereIndex) / float(c_numSpheres - 1);
-
 				hitInfo.material = GetZeroedMaterial();
-				hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);
+				hitInfo.material.albedo = float3(0.5f, 0.3f, 0.9f);
 				hitInfo.material.emissive = float3(0.0f, 0.0f, 0.0f);
-				hitInfo.material.specularChance = 0.02f;
-				hitInfo.material.specularRoughness = 0.0f;
-				hitInfo.material.specularColor = float3(1.0f, 1.0f, 1.0f) * 0.8f;
+				hitInfo.material.specularChance = 0.35f;
+				hitInfo.material.specularRoughness = 0.17f;
+				hitInfo.material.specularColor = float3(0.0f, 1.0f, 1.0f);
 				hitInfo.material.IOR = 1.1f;
-				hitInfo.material.refractionChance = 1.0f;
-				hitInfo.material.refractionRoughness = 0.0f;
-				hitInfo.material.refractionColor = float3(1.0f, 2.0f, 3.0f) * absorb;
+				hitInfo.material.refractionChance = 0.17f;
+				hitInfo.material.refractionRoughness = 0.75f;
+				hitInfo.material.refractionColor = float3(0.0f, 0.5f, 1.0f);
 			}
         }
     }
-    else if (/*$(Variable:Scene)*/ == 4)
+    else if (/*$(Variable:Scene)*/ == 4) //pearl
     {
 		const int c_numSpheres = 7;
 		for (int sphereIndex = 0; sphereIndex < c_numSpheres; ++sphereIndex)
 		{
 			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -9.0f + 0.75f * float(sphereIndex), 0.0f, 2.8f)))
 			{
+                float r = float(sphereIndex) / float(c_numSpheres - 1) * 0.5f;
 				hitInfo.material = GetZeroedMaterial();
-				hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);
-				hitInfo.material.emissive = float3(0.0f, 0.0f, 0.0f);
-				hitInfo.material.specularChance = 0.02f;
-				hitInfo.material.specularRoughness = 0.0f;
-				hitInfo.material.specularColor = float3(1.0f, 1.0f, 1.0f) * 0.8f;
-				hitInfo.material.IOR = 1.5f;
+				hitInfo.material.albedo = float3(0.9f, 0.85f, 0.88f);
+				hitInfo.material.emissive = float3(0.8f, 0.7f, 0.7f);
+				hitInfo.material.specularChance = 0.9f;
+				hitInfo.material.specularRoughness = 0.2f + r * 0.3f;;
+				hitInfo.material.specularColor = float3(1.0f, 0.95f, 0.95f);
+				hitInfo.material.IOR = 1.4f;
 				hitInfo.material.refractionChance = 1.0f;
-				hitInfo.material.refractionRoughness = 0.0f;
+				hitInfo.material.refractionRoughness = 0.3f + r * 0.4f;
+				hitInfo.material.refractionColor = float3(10.0f, 10.0f, 10.0f);
 			}
         }
     }
-    else if (/*$(Variable:Scene)*/ == 5)
+    else if (/*$(Variable:Scene)*/ == 5) //gold
     {
 		const int c_numSpheres = 7;
 		for (int sphereIndex = 0; sphereIndex < c_numSpheres; ++sphereIndex)
 		{
 			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -9.0f, 0.0f, 2.8f)))
 			{
-				float transparency = float(sphereIndex) / float(c_numSpheres - 1);
-
 				hitInfo.material = GetZeroedMaterial();
-				hitInfo.material.albedo = float3(0.9f, 0.25f, 0.25f);
-				hitInfo.material.emissive = float3(0.0f, 0.0f, 0.0f);
-				hitInfo.material.specularChance = 0.02f;
-				hitInfo.material.specularRoughness = 0.0f;
-				hitInfo.material.specularColor = float3(1.0f, 1.0f, 1.0f) * 0.8f;
-				hitInfo.material.IOR = 1.1f;
-				hitInfo.material.refractionChance = 1.0f - transparency;
-				hitInfo.material.refractionRoughness = 0.0f;
+                hitInfo.material.albedo = float3(1.0f, 0.71f, 0.29f); //kolor złota
+                hitInfo.material.specularColor = float3(1.0f, 0.71f, 0.29f); 
+                hitInfo.material.specularChance = 1.0f;
+                hitInfo.material.specularRoughness = 0.05f; // gładkość
+                hitInfo.material.refractionChance = 0.0f;
+                hitInfo.material.IOR = 1.5f;
 			}
 		}
     }
-    else if (/*$(Variable:Scene)*/ == 6)                  //tą scene edytujemy i dodajemy kod do przycisków tworzonych w gigiedit
+    else if (/*$(Variable:Scene)*/ == 6)     //chromium            
     {
 		const int c_numSpheres = 7;
 		for (int sphereIndex = 0; sphereIndex < c_numSpheres; ++sphereIndex)
 		{
 			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -8.0f, 00.0f, 2.8f)))
 			{
-				float r = float(sphereIndex) / float(c_numSpheres - 1) * 0.5f;
-
-				hitInfo.material = GetZeroedMaterial();
-				//hitInfo.material.albedo = float3(0.05f, 0.95f, 0.05f);
-				hitInfo.material.emissive = float3(0.2f, 0.98f, 0.2f)*0.25f;  //float3(0.1f, 0.1f, 0.8f);
-				hitInfo.material.specularChance = 0.02f;
-				hitInfo.material.specularRoughness = r;
-				hitInfo.material.specularColor = float3(0.8f, 0.4f, 0.2f) * 0.5f;
-				hitInfo.material.IOR = 1.1f;
-				hitInfo.material.refractionChance = 1.0f;
-				hitInfo.material.refractionRoughness = r;
-				hitInfo.material.refractionColor = float3(0.95f, 0.05f, 0.95f);
-			}
-        }
-    }
-    else if (/*$(Variable:Scene)*/ == 7)
-    {
-		const int c_numSpheres = 7;
-		for (int sphereIndex = 0; sphereIndex < c_numSpheres; ++sphereIndex)
-		{
-			if (TestSphereTrace(rayPos, rayDir, hitInfo, float4(-18.0f + 6.0f * float(sphereIndex), -8.0f, 00.0f, 2.8f)))
-			{
-				float r = float(sphereIndex) / float(c_numSpheres - 1) * 0.5f;
-
-				hitInfo.material = GetZeroedMaterial();
-				hitInfo.material.albedo = float3(0.0f, 0.0f, 0.0f); // jak bardzo odbija swiatlo biale (bazowy kolor obiektu, -kolor czegos bez oswietlenia na nim) (dla diaelektrykow nie metali to jest kolor ,ale dla metali aby być fizycznie poprawnym to 0 0 0, ) 
-				hitInfo.material.emissive = float3(0.2f, 0.2f, 0.8f) * 1000.0f;  // bylo 0 0 0  a teraz blue, 0 0 1  to jak laser
-				hitInfo.material.specularChance = 0.02f;  // szansa na odbicie połyskowe (świecące)
-				hitInfo.material.specularRoughness = r;  // szorstkośc powierzchni 0-1  (0.1/0.5 dobre wartosci)
-				hitInfo.material.specularColor = float3(1.0f, 1.0f, 1.0f) * 0.8f;  // kolor odbicia połyskowego (realistycznie szary - te same wartosci i duzo silnikow ma * 0.25f) Dla metali to okresla kolor metalu czyli zloto zoltawe, a srebne to bardziej szare
-				hitInfo.material.IOR = 1.1f;    // indeks refrakcji (wspolczynik zalamania swiatla)
-				hitInfo.material.refractionChance = 1.0f;   // szansa, ze promien bedzie zalamany i spenetruje powierzchniue obiektu 
-				hitInfo.material.refractionRoughness = r;  // szorstkosc ośroda (w środku jaka jest ) - moze sie zmieniac w raz z dystansem (tutaj uproszczone)
- 				hitInfo.material.refractionColor = float3(0.1f, 0.1f, 0.9f);  // Beer’s Law
+                float r = float(sphereIndex) / float(c_numSpheres - 1) * 0.5f;
+                hitInfo.material = GetZeroedMaterial();
+                hitInfo.material.albedo = float3(0.01f, 0.01f, 0.01f); //prawie czarne albedo
+                hitInfo.material.emissive = float3(0.0f, 0.0f, 0.0f); //brak emisji
+                hitInfo.material.specularChance = 1.0f; //idealne odbicie
+                hitInfo.material.specularRoughness = 0.005f; //duża gładkość
+                hitInfo.material.specularColor = float3(0.95f, 0.95f, 1.0f); //srebrny kolor odbicia
+                hitInfo.material.IOR = 1.5f; 
+                hitInfo.material.refractionChance = 0.0f; //brak refrakcji
+                hitInfo.material.refractionRoughness = 0.0f;
+                hitInfo.material.refractionColor = float3(0.0f, 0.0f, 0.0f);
 			}
         }
     }
